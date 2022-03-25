@@ -3,9 +3,12 @@
   <hr />
   <TodoInput @todoSaved="(t) => todoSaved(t)" :todotoedit="todoToEdit" />
   <TodosContainer
-    :todos="todos"
+    :todos="filteredTodos"
+    :all="allCount"
+    :done="doneCount"
     @todoDeleted="(id) => deleteTodo(id)"
     @todoEdit="(id) => todoEdit(id)"
+    @showFiltered="(type) => filterTodos(type)"
   />
 </template>
 <script>
@@ -23,6 +26,7 @@ export default {
     return {
       todos: [],
       todoToEdit: null,
+      filterBy: -1,
     };
   },
   methods: {
@@ -45,8 +49,31 @@ export default {
     todoEdit(id) {
       this.todoToEdit = this.todos.find((t) => t.id === id);
     },
+    filterTodos(type) {
+      this.filterBy = type;
+    },
   },
   mounted() {},
+  computed: {
+    allCount() {
+      return this.todos.length;
+    },
+    doneCount() {
+      return this.todos.filter((t) => t.done).length;
+    },
+    filteredTodos() {
+      switch (this.filterBy) {
+        case -1:
+          return this.todos;
+        case 0:
+          return this.todos.filter((t) => !t.done);
+        case 1:
+          return this.todos.filter((t) => t.done);
+        default:
+          return this.todos;
+      }
+    },
+  },
 };
 </script>
 

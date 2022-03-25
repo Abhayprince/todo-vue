@@ -1,13 +1,19 @@
 <template>
   <ul>
     <li>
-      <button type="button">All [{{ all }}]</button>
+      <button type="button" @click="() => filterTodos(-1)">
+        All [{{ all }}]
+      </button>
     </li>
     <li>
-      <button type="button">Done [{{ done }}]</button>
+      <button type="button" @click="() => filterTodos(1)">
+        Done [{{ done }}]
+      </button>
     </li>
     <li>
-      <button type="button">Pending [{{ pending }}]</button>
+      <button type="button" @click="() => filterTodos(0)">
+        Pending [{{ all - done }}]
+      </button>
     </li>
   </ul>
   <TodoList
@@ -24,24 +30,18 @@ export default {
     TodoList,
   },
   name: "TodosContainer",
-  props: ["todos"],
-  emits: ["todoDeleted", "todoEdit"],
+  props: ["todos", "all", "done"],
+  emits: ["todoDeleted", "todoEdit", "showFiltered"],
   data() {
     return {};
   },
-  methods: {},
-  mounted() {},
-  computed: {
-    all() {
-      return this.todos.length;
-    },
-    done() {
-      return this.todos.filter((t) => t.done).length;
-    },
-    pending() {
-      return this.todos.filter((t) => !t.done).length;
+  methods: {
+    filterTodos(type) {
+      // type => -1: All   1: Done    0: Pending
+      this.$emit("showFiltered", type);
     },
   },
+  mounted() {},
 };
 </script>
   
