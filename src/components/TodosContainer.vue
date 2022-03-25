@@ -10,7 +10,7 @@
       <button type="button">Pending [{{ pending }}]</button>
     </li>
   </ul>
-  <TodoList :todos="todos" />
+  <TodoList :todos="todos" @todoDeleted="(id) => $emit('todoDeleted', id)" />
 </template>
   <script>
 import TodoList from "./TodoList.vue";
@@ -21,7 +21,7 @@ export default {
   },
   name: "TodosContainer",
   props: ["todos"],
-  emits: [],
+  emits: ["todoDeleted"],
   data() {
     return {};
   },

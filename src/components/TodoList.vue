@@ -1,6 +1,11 @@
 <template>
   <div class="todo-list">
-    <TodoItem v-for="todo of todos" :key="todo.id" :todo="todo" />
+    <TodoItem
+      v-for="todo of todos"
+      :key="todo.id"
+      :todo="todo"
+      @todoDeleted="(id) => $emit('todoDeleted', id)"
+    />
   </div>
 </template>
   <script>
@@ -10,7 +15,7 @@ export default {
   components: { TodoItem },
   name: "TodoList",
   props: ["todos"],
-  emits: [],
+  emits: ["todoDeleted"],
   data() {
     return {};
   },

@@ -1,27 +1,40 @@
 <template>
-  <input type="checkbox" />
-  <label :class="{ done: todo.done }">{{ n }} - {{ todo.text }}</label>
-  <button>Delete</button>
+  <div class="row">
+    <input type="checkbox" v-model="currentTodo.done" />
+    <label :class="{ done: currentTodo.done }"
+      >{{ currentTodo.id }} - {{ currentTodo.text }}</label
+    >
+    <button @click="deleteTodo">Delete</button>
+  </div>
 </template>
   <script>
 export default {
   components: {},
   name: "TodoItem",
   props: ["todo"],
-  emits: [],
+  emits: ["todoDeleted"],
   data() {
     return {
       n: this.todo.id,
     };
   },
-  methods: {},
+  methods: {
+    deleteTodo() {
+      this.$emit("todoDeleted", this.currentTodo.id);
+    },
+  },
   mounted() {},
+  computed: {
+    currentTodo() {
+      return this.todo;
+    },
+  },
 };
 </script>
   
   <style scoped>
-h3 {
-  margin: 40px 0 0;
+.row {
+  margin: 10px 0 0;
 }
 .done {
   text-decoration: line-through;
