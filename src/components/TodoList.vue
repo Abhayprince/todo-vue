@@ -5,6 +5,7 @@
       :key="todo.id"
       :todo="todo"
       @todoDeleted="(id) => $emit('todoDeleted', id)"
+      @todoEdit="(id) => $emit('todoEdit', id)"
     />
   </div>
 </template>
@@ -15,7 +16,7 @@ export default {
   components: { TodoItem },
   name: "TodoList",
   props: ["todos"],
-  emits: ["todoDeleted"],
+  emits: ["todoDeleted", "todoEdit"],
   data() {
     return {};
   },

@@ -1,8 +1,12 @@
 <template>
   <h1>Todo Vue 3</h1>
   <hr />
-  <TodoInput @todoSaved="(t) => todoSaved(t)" />
-  <TodosContainer :todos="todos" @todoDeleted="(id) => deleteTodo(id)" />
+  <TodoInput @todoSaved="(t) => todoSaved(t)" :todotoedit="todoToEdit" />
+  <TodosContainer
+    :todos="todos"
+    @todoDeleted="(id) => deleteTodo(id)"
+    @todoEdit="(id) => todoEdit(id)"
+  />
 </template>
 <script>
 import TodoInput from "./TodoInput.vue";
@@ -18,15 +22,28 @@ export default {
   data() {
     return {
       todos: [],
+      todoToEdit: null,
     };
   },
   methods: {
     todoSaved(todo) {
-      const newTodo = { id: this.todos.length + 1, text: todo, done: false };
-      this.todos.push(newTodo);
+      if (todo.id) {
+        //Edit
+        const idx = this.todos.findIndex((t) => t.id === todo.id);
+        if (idx > -1) {
+          this.todos[idx] = { ...todo };
+        }
+      } else {
+        //Add new
+        const newTodo = { ...todo, id: this.todos.length + 1 };
+        this.todos.push(newTodo);
+      }
     },
     deleteTodo(id) {
       this.todos = this.todos.filter((t) => t.id !== id);
+    },
+    todoEdit(id) {
+      this.todoToEdit = this.todos.find((t) => t.id === id);
     },
   },
   mounted() {},

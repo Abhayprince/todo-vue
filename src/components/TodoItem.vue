@@ -4,6 +4,7 @@
     <label :class="{ done: currentTodo.done }"
       >{{ currentTodo.id }} - {{ currentTodo.text }}</label
     >
+    <button @click="editTodo">Edit</button>
     <button @click="deleteTodo">Delete</button>
   </div>
 </template>
@@ -12,7 +13,7 @@ export default {
   components: {},
   name: "TodoItem",
   props: ["todo"],
-  emits: ["todoDeleted"],
+  emits: ["todoDeleted", "todoEdit"],
   data() {
     return {
       n: this.todo.id,
@@ -21,6 +22,9 @@ export default {
   methods: {
     deleteTodo() {
       this.$emit("todoDeleted", this.currentTodo.id);
+    },
+    editTodo() {
+      this.$emit("todoEdit", this.currentTodo.id);
     },
   },
   mounted() {},
